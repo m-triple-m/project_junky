@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block css %}
+
+    <style>
+        
+    </style>
+{% endblock %}
+{% block body %}
+
+<div class="container mt-5">
+    <div class="jumbotron">
+        <h1 class="display-3">Scan file for junk and malware</h1>
+        
+        <hr class="my-2">
+        <p>More info</p>
+        <p class="h4">Upload File to Continue</p>
+        <div class="card">
+            <div class="card-body">
+                <form action="scanfile" enctype="multipart/form-data" method="POST">
+                    <input type="file" name="myfile" class="form-control">
+                    <button class="btn btn-warning mt-5">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+    <script>
+        
+    </script>
+{% endblock %}
+

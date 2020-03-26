@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block css %}
+
+    <style>
+        
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="container">
+        
+        {% if not nofiles %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>FileName</th>
+                    <th>Extension</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file, ext in data %}
+                <tr>
+                    <td>{{file}}</td>
+                    <td><button class="btn btn-danger" disabled>{{ext}}</button></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <button id="clean" class="btn btn-warning btn-block">Clean Junk Files</button>
+        {% else %}
+            <p class="h2 text-center">No Junk Files Found!!</p>
+        {% endif %}
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $(document).ready(() => {
+            
+            removeFiles = () => {
+                $.get('/delJunk', {}, (response) => {
+                    console.log(response)
+                    if(response == 'success'){
+                        Swal.fire(
+                            'Well Done!',
+                            'All Junk files have been removed!!',
+                            'success'
+                            )
+                            .then(() => {
+                                location.reload(true);
+                            })
+                            
+                    }
+                })
+            }
+
+            $('#clean').click(() => {
+                removeFiles();
+            })
+
+        })
+    </script>
+{% endblock %}
+

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block css %}
+
+    <style>
+        
+    </style>
+{% endblock %}
+{% block body %}
+
+<div class="container">
+    
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title"><h1 class="display-4">Manage Junk Extensions</h1></div>
+                     
+        </div>
+        <div class="card-body">
+            
+                
+                <div class="row">
+                    <label for="myfile" class="h4 col-md-2">Select a file:</label>
+                    <div class="col-md-6">
+                        <input id="name" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-warning" id="add">Add Extension</button>
+                    </div>
+                </div>
+                <table class="table">
+                    <tbody id="listDir"></tbody>
+                </table>
+
+            
+        </div>
+
+        
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+    <script>
+        $(document).ready(() => {
+            
+            addExt = (input) => {
+                $.get('/addext', {ext : input}, () => {
+                    console.log(`added ${input}`)
+                    getExt();
+                })
+                
+            }
+
+            remExt = (input) => {
+                $.get('/remext', {ext : input}, () => {
+                    console.log(`removed ${input}`)
+                })
+                getExt();
+            }
+
+            getExt = () => {
+                $.get('/getext', {}, (data) => {
+                    console.log(`${data}`)
+                    if(data){
+                        $('#listDir').html('')
+                        data.forEach((ele) => {
+                            $('#listDir').append(`<tr><td>${ele}<td><td><button onClick="deleteExt('${ele}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button></td></tr>`)
+                        })
+                    }
+                })
+            }
+
+            deleteExt = (name) => {
+                $.get('/delext', { name : name}, (data => {
+                    console.log(data);
+                    getExt();
+                }))
+            }
+
+            $('#add').click(() => {
+                addExt($('#name').val());
+            })
+            getExt();
+        })
+    </script>
+{% endblock %}
+

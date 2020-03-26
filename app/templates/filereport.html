@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block css %}
+
+    <style>
+        
+    </style>
+{% endblock %}
+{% block body %}
+
+<div class="container mt-5">
+    <p class="display-4 text-center">File Scan Report</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Malware scan result</th>
+                <th>Junk scan result</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in data %}
+            <tr>
+                <td>{{record.id}}</td>
+                <td>{{record.name}}</td>
+                <td>{{record.malware}}</td>
+                <td>{{record.junk}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+{% block js %}
+    <script>
+        
+    </script>
+{% endblock %}
+

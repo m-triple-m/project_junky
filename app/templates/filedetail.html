@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block css %}
+
+{% endblock %}
+{% block body %}
+<p>Current file: {{ currentFile }}</p>
+<p>
+    <table>
+        {% for key, value in fileProperties.items() %}
+        <tr>
+            <td>{{ key }}</td>
+            <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</p>
+{% endblock %}
+{% block js %}
+
+{% endblock %}
+

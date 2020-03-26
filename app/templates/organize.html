@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block css %}
+
+    <style>
+        .browse{
+            cursor: pointer;
+    }
+    </style>
+{% endblock %}
+{% block body %}
+
+<div class="container">
+    <div class="row"></div>
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title"><h1 class="display-4">Select a system drive</h1></div>
+            <div method="post" class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">select a drive</span>
+                </div>
+                <input list="drives" class="form-control" id="dirname" placeholder="C: drive">
+                <datalist id="drives">
+                  <option value="C:/">
+                  <option value="D:/">
+                  <option value="E:/">
+                </datalist>
+                <div class="input-group-append">
+                    <button class="btn btn-danger" id="getdir">browse</button>  
+                </div>
+
+            </div>            
+        </div>
+        <div class="card-body">
+            {% for dir in dirs %}
+                <p class="h6">{{dir}}</p>
+            {% endfor %}
+        </div>
+
+        <button id="back" class="btn btn-secondary">Back</button>
+        <table class="table">
+            <tbody id="listDir"></tbody>
+        </table>
+    </div>
+</div>
+
+<div id="result"></div>
+{% endblock %}
+{% block js %}
+    <script>
+        $(document).ready(() => {
+            var items;
+            var current;
+            getList = (input) => {
+                
+                if(!input){
+                    alert('no input!!')
+                    return;
+                }
+                $.get('/dir', {path : input}, (data) => {
+                    console.log(data);
+                    if(data[0]){
+                        items = data[0];
+                        current = data[1]
+                        $('#listDir').html('');
+                        items.forEach((ele, index) => {
+                            $('#listDir').append(`<tr><td onClick="selectDir(${index})">${ele}</td>  <td><a class="btn btn-primary"  onClick="organizeDir(${index})">Organize Directory</a></td></tr>`)
+                        })
+                        }
+                })
+            }
+
+            selectDir = (index) => {
+                console.log(index);
+                getList(items[index])
+            }
+
+            $('#back').click(() => {
+                input = '..';
+                getList(input);
+            })
+
+            $('#getdir').click(() => {
+                input = $('#dirname').val();
+
+
+                getList(input);
+            })
+
+            organizeDir = (index) => {
+                $.get('/organize', {path : `${current}/${items[index]}`}, (data) => {
+                    if(data == 'success'){
+                        Swal.fire(
+                            'Well Done!',
+                            'All files have been organized!!',
+                            'success'
+                        )
+                    }
+                })
+            }
+        })
+    </script>
+{% endblock %}
+
